@@ -12,6 +12,48 @@ Tim: OTW jdi nasabah prioritas (Institut Teknologi Sepuluh Nopember)
 
 RAMPUNG adalah platform web pelaporan keluhan warga dan analisis data publik berbasis transparansi dua arah, yang mengintegrasikan verifikasi bukti foto sebelum-sesudah (*before-after*) dengan dasbor wawasan kewargaan (*civic insight*) untuk mendukung akuntabilitas layanan publik Kota Surakarta. Melalui integrasi pelaporan partisipatif dan pemetaan geospasial, platform ini memastikan setiap aduan tertangani secara nyata dan hasilnya dapat diverifikasi langsung oleh masyarakat.
 
+Pelapor menjadi penentu akhir apakah suatu laporan benar-benar *rampung*. Platform ini ditujukan bagi warga Kota Surakarta (5 kecamatan, 54 kelurahan, 587.646 jiwa; Dispendukcapil Kota Surakarta, 2023), petugas instansi, dan publik yang ingin memantau kinerja layanan.
+
+![Preview landing page RAMPUNG](docs/images/Desktop.png)
+
+### Masalah yang Diselesaikan
+
+| Masalah | Solusi di RAMPUNG |
+| :--- | :--- |
+| Laporan sulit dipantau | **Lacak Laporan**: garis waktu status dan hitungan hari dengan kode lacak |
+| Klaim "selesai" sulit dicek | Foto sebelum-sesudah berdampingan; pelapor menjawab "Sudah beres" atau "Belum" |
+| Data sulit dipahami | **Papan Tanggap**, **Ringkasan Bulanan**, dan "Dari Mana Data Ini?" untuk tiap angka |
+| Layanan belum inklusif | Teks besar, kontras tinggi, fitur dibacakan, dan navigasi keyboard (target WCAG 2.2 AA) |
+
+### Fitur Utama
+
+- **Lapor Cepat**: pilih kategori lewat ikon (Jalan, Lampu, Saluran Air), foto "sebelum", lokasi terisi otomatis, bisa anonim atau bernama, lalu mendapat kode lacak.
+- **Lacak Laporan**: masukkan kode atau lihat riwayat akun; linimasa status diperbarui secara real-time.
+- **Peta Laporan**: sebaran laporan per wilayah dengan filter kategori, status, dan periode; status dibedakan lewat warna dan bentuk (Baru, Diproses, Selesai, Perlu dicek).
+- **Laporan Serupa**: sistem menampilkan laporan di sekitar lokasi dengan kategori sama sehingga warga bisa mendukungnya tanpa membuat laporan ganda.
+- **Panel Petugas**: antrean verifikasi, penanda "perlu verifikasi tambahan", dan pembaruan status penanganan.
+- **Dashboard (Civic Insight)**: tren, distribusi, perbandingan antarwilayah, periode, dan kategori, disertai insight otomatis yang bersifat deskriptif.
+- **Tentang & Sumber Data**: metodologi, sumber dan waktu pembaruan data, serta kebijakan privasi.
+
+---
+
+## 2. Alur Aplikasi
+
+Aplikasi melibatkan tiga peran: **Warga/Pengguna**, **Sistem (validasi)**, dan **Petugas/Instansi**.
+
+1. **Warga membuat laporan.** Dari beranda, warga memilih *Lapor Sekarang*, mengisi judul, deskripsi, kategori, lokasi, foto sebelum, dan identitas (anonim atau bernama). Setelah terkirim, warga menerima **kode lacak**.
+2. **Sistem memeriksa laporan awal.** Sistem mengecek kelengkapan dan relevansi. Jika kurang jelas, warga mendapat **saran perbaikan** (lokasi, kronologi, detail). Jika terdeteksi spam, promosi, pinjaman, atau iklan, laporan diberi status **"Memerlukan verifikasi tambahan"**. Laporan tidak dihapus otomatis.
+3. **Petugas memverifikasi.** Petugas menerima laporan, meminta dilengkapi, atau menolak disertai alasan. Laporan yang ditandai sistem ditinjau oleh petugas.
+4. **Laporan disimpan dan dicek kemiripannya.** Data masuk ke database (Supabase PostgreSQL + PostGIS) dan foto ke Storage. Sistem mencari laporan serupa berdasarkan kategori dan radius lokasi.
+5. **Instansi menangani.** Status berjalan: **Diteruskan → Dalam Penanganan → Selesai**, dan petugas mengunggah foto sesudah.
+6. **Warga melacak secara real-time.** Perubahan status tampil langsung lewat Supabase Realtime pada halaman *Lacak Laporan*.
+7. **Warga mengonfirmasi hasil.** Warga melihat foto sebelum dan sesudah berdampingan lalu menjawab "Sudah beres" atau "Belum".
+8. **Warga dan publik memantau.** *Peta Laporan* menampilkan sebaran laporan dengan filter; *Dashboard* menampilkan tren, perbandingan, dan insight otomatis lengkap dengan sumber serta waktu pembaruan data.
+
+### Catatan tentang Validasi Laporan
+
+Lapisan validasi bekerja dengan aturan dan kata kunci (*rule-based*) serta klasifikasi ringan. Fungsinya hanya **memberi penanda dan saran**, bukan menolak laporan. Sistem tidak dapat memastikan benar atau tidaknya suatu kejadian di lapangan; keputusan akhir ada pada petugas, dan hasil perbaikan dikonfirmasi oleh pelapor.
+
 ### Diagram Alur dan Arsitektur Sistem
 
 #### Flowchart Sistem
@@ -25,7 +67,7 @@ RAMPUNG adalah platform web pelaporan keluhan warga dan analisis data publik ber
 
 ---
 
-## 2. Tech Stack yang Digunakan
+## 3. Tech Stack yang Digunakan
 
 | Komponen | Teknologi | Keterangan |
 | :--- | :--- | :--- |
@@ -44,7 +86,7 @@ RAMPUNG adalah platform web pelaporan keluhan warga dan analisis data publik ber
 
 ---
 
-## 3. Cara Menjalankan Project
+## 4. Cara Menjalankan Project
 
 ### Prasyarat
 - Node.js versi 18.17.0 atau lebih baru
@@ -120,7 +162,7 @@ RAMPUNG adalah platform web pelaporan keluhan warga dan analisis data publik ber
 
 ---
 
-## 4. Progress Saat Ini
+## 5. Progress Saat Ini
 
 Pada tahap **First Draft Submission (01 November 2026)**, progres tim saat ini berfokus pada **tahap pembuatan UI/UX, arsitektur informasi, wireframing, dan interactive prototype di Figma**, sembari menyiapkan fondasi arsitektur kode dan basis data:
 
@@ -131,3 +173,19 @@ Pada tahap **First Draft Submission (01 November 2026)**, progres tim saat ini b
 | Inisialisasi Repositori | Setup proyek Next.js 14 App Router, konfigurasi TypeScript, Tailwind CSS, dan dokumentasi teknis. | Sedang Berjalan |
 | Implementasi Antarmuka Web | Penyiapan kerangka halaman (landing page, form pelaporan cepat, modul pelacakan resi, peta Leaflet). | Tahap Awal |
 | Integrasi Backend & API | Konfigurasi instance Supabase, bucket penyimpanan foto, dan integrasi API geospasial. | Direncanakan (Tahap Final) |
+
+---
+
+## 6. Struktur Dokumentasi
+
+```
+WIA-OTW-jdi-nasabah-prioritas/
+├── README.md
+└── docs/
+    ├── WIA_FSDMIA2026_OTW-jdi-nasabah-prioritas.pdf   (PDF First Draft yang dikumpulkan)
+    └── images/
+        ├── Desktop.png              (preview landing page)
+        ├── flowchart-sistem.png
+        ├── user-flow.png
+        └── arsitektur-sistem.png
+```
